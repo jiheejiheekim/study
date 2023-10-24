@@ -1,0 +1,72 @@
+-- 예제 1 : 업무별로 최대 급여를 받는 사원의 사원번호와 이름을 출력하세요.
+SELECT JOB,MAX(SAL) FROM EMP GROUP BY JOB;
+
+SELECT ENAME, EMPNO, JOB, SAL
+FROM EMP
+WHERE (JOB, SAL)
+IN (SELECT JOB,MAX(SAL) FROM EMP GROUP BY JOB);
+
+-- 예제 2 : SALESMAN의 최소급여 보다 큰 사원정보를 가져와라
+SELECT SAL FROM EMP WHERE JOB='SALESMAN';
+
+SELECT ENAME, SAL FROM EMP
+WHERE SAL > ANY(SELECT SAL FROM EMP WHERE JOB='SALESMAN');
+
+-- 예제 3 : SALESMAN의 최대 급여보다 작으면 가져와라
+SELECT ENAME, SAL FROM EMP
+WHERE SAL < ANY(SELECT SAL FROM EMP WHERE JOB='SALESMAN');
+
+-- 예제 4 : SALESMAN의 최대급여 보다 큰 사원정보를 가져와라
+SELECT ENAME, SAL FROM EMP
+WHERE SAL > ALL(SELECT SAL FROM EMP WHERE JOB='SALESMAN');
+
+-- 예제 5 : 업무가 'SALESMAN'인 사원의 최대급여보다
+--	       많으면서 부서번호가 20번이 아닌 사원의 이름과 급여를 출력
+SELECT DEPTNO, ENAME, SAL, JOB FROM EMP
+WHERE DEPTNO<>'20' AND SAL > ALL(SELECT SAL FROM EMP WHERE JOB='SALESMAN');
+
+-- 예제 6 : 사원을 관리할 수 있는 사원의 정보를 보여라
+SELECT E.EMPNO, ENAME FROM EMP E
+WHERE EXISTS (SELECT EMPNO FROM EMP WHERE E.EMPNO=MGR);
+
+-- 예제 7 : 부서별로 최소 급여를 받는 사원의 사번,이름,업무,부서번호를 출력하세요. 
+--         단 업무별로 정렬하세요.
+SELECT EMPNO, ENAME, JOB, DEPTNO
+FROM EMP
+WHERE (JOB, SAL) 
+IN(SELECT JOB, MIN(SAL) FROM EMP GROUP BY JOB) ORDER BY 4;
+
+-- 예제 8 : 고객 테이블에 있는 고객 정보 중 마일리지가 가장 높은 금액의 고객 정보를 보여주세요.
+SELECT * FROM MEMBER 
+WHERE MILEAGE=(SELECT MAX(MILEAGE) FROM MEMBER);
+
+-- 예제 9 : 상품 테이블에 있는 전체 상품 정보 중 상품의 판매가격이 
+--         판매가격의 평균보다 큰  상품의 목록을 보여주세요. 
+--         단, 평균을 구할 때와 결과를 보여줄 때의 판매 가격이
+--         50만원을 넘어가는 상품은 제외시키세요.
+SELECT AVG(OUTPUT_PRICE) FROM PRODUCTS WHERE OUTPUT_PRICE<500000;
+
+SELECT * FROM PRODUCTS 
+WHERE OUTPUT_PRICE>(SELECT AVG(OUTPUT_PRICE) FROM PRODUCTS WHERE OUTPUT_PRICE<500000)
+ AND OUTPUT_PRICE<500000;
+
+-- 예제 10 : 고객 테이블에 있는 고객 정보 중 마일리지가 가장 높은 금액을
+--          가지는 고객에게 보너스 마일리지 5000점을 더 주는 SQL을 작성하세요
+SELECT * FROM MEMBER;
+SELECT MAX(MILEAGE) FROM MEMBER;
+
+UPDATE MEMBER SET MILEAGE=MILEAGE+5000
+WHERE MILEAGE=(SELECT MAX(MILEAGE) FROM MEMBER);
+ROLLBACK;
+
+-- 예제 11 : 상품 테이블에서 상품 목록을 공급 업체별로 정리한 뒤,
+--          각 공급업체별로 최소 판매 가격을 가진 상품을 삭제하세요.
+DELETE FROM PRODUCTS WHERE (EP_CODE_FK, OUTPUT_PRICE)
+IN(SELECT EP_CODE_FK, MIN(OUTPUT_PRICE) FROM PRODUCTS GROUP BY EP_CODE_FK); 
+ROLLBACK;
+SELECT * FROM PRODUCTS;
+
+-- 예제 12 : EMP와 DEPT 테이블에서 업무가 MANAGER인 사원의 이름, 업무,부서명,근무지를 출력
+SELECT ENAME, JOB, DNAME, LOC
+FROM (SELECT * FROM EMP WHERE JOB='MANAGER') A JOIN DEPT D
+ON A.DEPTNO=D.DEPTNO;
