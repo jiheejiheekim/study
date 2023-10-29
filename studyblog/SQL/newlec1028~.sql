@@ -30,4 +30,9 @@ CREATE TABLE MEMBER_ROLE (
 INSERT INTO NOTICE VALUES(1, 'jdbc란 무엇인가?', 'newlec', 'aaa', SYSDATE, 0, '');
 COMMIT;
 
+-----------------------------------------------------------------------10/29
+INSERT INTO NOTICE VALUES(2, 'jdbc란 무엇인가?', 'newlec', 'aaa', SYSDATE, 0, '');
+INSERT INTO NOTICE VALUES(3, 'jdbc란 무엇인가?', 'newlec', 'aaa', SYSDATE, 0, '');
+COMMIT;
 
+select * from NOTICE;
