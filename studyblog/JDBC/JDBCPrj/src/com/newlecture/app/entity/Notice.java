@@ -7,7 +7,7 @@ public class Notice {
 	private int id;
 	private String title;
 	private String writerId;
-	private Date regDat;
+	private Date regDate;
 	private String content;
 	private int hit;
 	private String files;
@@ -18,12 +18,12 @@ public class Notice {
 	}
 	
 	//필드를 갖는 생성자
-	public Notice(int id, String title, String writerId, Date regDat, String content, int hit, String files) {
+	public Notice(int id, String title, String writerId, Date regDate, String content, int hit, String files) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.writerId = writerId;
-		this.regDat = regDat;
+		this.regDate = regDate;
 		this.content = content;
 		this.hit = hit;
 		this.files = files;
@@ -49,11 +49,11 @@ public class Notice {
 	public void setWriterId(String writerId) {
 		this.writerId = writerId;
 	}
-	public Date getRegDat() {
-		return regDat;
+	public Date getRegDate() {
+		return regDate;
 	}
-	public void setRegDat(Date regDat) {
-		this.regDat = regDat;
+	public void setRegDate(Date regDate) {
+		this.regDate = regDate;
 	}
 	public String getContent() {
 		return content;

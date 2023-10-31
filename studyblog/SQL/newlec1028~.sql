@@ -82,4 +82,41 @@ INSERT INTO NOTICE VALUES(4, 'jdbc를', 'LAST', 'JDBC 얼른 끝내자', SYSDATE, 0, '
 
 SELECT * FROM NOTICE ORDER BY ID;
 
+-----------------------------------------------------------------------10/31
+select * from notice;
+
+INSERT INTO NOTICE VALUES(7, '할 수 있다', 'right', 'best woman', SYSDATE, 0, '');
+INSERT INTO NOTICE VALUES(8, '나는 잘 한다', 'good', 'good girl', SYSDATE, 0, '');
+INSERT INTO NOTICE VALUES(9, '힘을 내자 화이팅', 'great', 'can you study with me', SYSDATE, 0, '');
+
+delete from notice where id=5;
+delete from notice where id=6;
+
+update notice set id=5 where id=7;
+update notice set id=6 where id=8;
+update notice set id=7 where id=9;
+
+INSERT INTO NOTICE VALUES(8, 'JDBC 뽀개기', 'rib', 'code', SYSDATE, 0, '');
+INSERT INTO NOTICE VALUES(9, '슬슬 졸리다', 'goodsleep', 'youtube', SYSDATE, 0, '');
+INSERT INTO NOTICE VALUES(10, '키보드 소리가 좋네', 'keyboard', '내일은 1일', SYSDATE, 0, '');
+INSERT INTO NOTICE VALUES(11, '오늘은 10월의 마지막 날이에요', '1010', 'miss you october', SYSDATE, 0, '');
+
+select * from notice;
+
+select rownum, notice.* from notice
+where rownum between 1 and 10; --잘 됨
+
+select rownum, notice.* from notice
+where rownum between 2 and 10; --잘 안됨 => 서브쿼리 이용
+
+select * from 
+(select rownum num, notice.* from notice order by regdate desc)
+where num between 1 and 10; --잘 안됨
+
+select * from 
+    (select rownum num, n.* from
+        (select * from notice order by regdate desc) n
+    )
+where num between 3 and 10;
+
 
