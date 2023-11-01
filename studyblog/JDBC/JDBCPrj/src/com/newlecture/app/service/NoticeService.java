@@ -19,19 +19,21 @@ public class NoticeService {
 	private String pwd = "newlec";
 	private String driver="oracle.jdbc.driver.OracleDriver";
 	
-	public List<Notice> getList(int page) throws SQLException, ClassNotFoundException{
+	public List<Notice> getList(int page, String field, String query) throws SQLException, ClassNotFoundException{
 		
 		int start = 1 + (page-1)*10;	//1,11,21,31...
 		int end = 10*page;				//10,20,30,40..
 		
-		String sql = "select * from notice_view where num between ? and ?";
+		String sql = "select * from notice_view where "+field+" like ? and num between ? and ?";
 
 		Class.forName(driver);
 		Connection con = DriverManager.getConnection(url, uid, pwd);
 		PreparedStatement st = con.prepareStatement(sql);
 		
-		st.setInt(1, start);
-		st.setInt(2, end);
+		
+		st.setString(1, "%"+query+"%");	// 검색어(query)에 A를 입력한다면 => '%A%'
+		st.setInt(2, start);
+		st.setInt(3, end);
 		
 		ResultSet rs = st.executeQuery();
 		
