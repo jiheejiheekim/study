@@ -10,16 +10,23 @@ import com.newlecture.app.service.NoticeService;
 public class NoticeConsole {
 
 	private NoticeService service;
+	private int page;	//상태변수
+	
 	
 	public NoticeConsole() {
 		service=new NoticeService();
+		page=1;		//기본값
 	}
 	
 	public void printNoticeList() throws ClassNotFoundException, SQLException {
-		List<Notice> list=service.getList();
+		List<Notice> list=service.getList(page);	//int값(page) 넣고 출력
+		int count=service.getCount();	//지역변수로 수정
+		int lastPage=count/10;			//마지막페이지
+		//lastPage = count%10==0? lastPage:lastPage+1;	//3항연산자
+		lastPage = count%10>0? lastPage+1:lastPage;	//3항연산자
 		
 		System.out.println("-------------------------------------");
-		System.out.printf("<공지사항> 총 %d 게시글\n", 12);
+		System.out.printf("<공지사항> 총 %d 게시글\n", count);
 		System.out.println("-------------------------------------");
 		
 		//반복문
@@ -28,7 +35,7 @@ public class NoticeConsole {
 					n.getId(), n.getTitle(), n.getWriterId(), n.getRegDate());
 		}
 		System.out.println("-------------------------------------");
-		System.out.printf("            %d / %d pages\n", 1, 2);
+		System.out.printf("            %d / %d pages\n", page, lastPage);
 	}
 	
 
@@ -44,6 +51,30 @@ public class NoticeConsole {
 		int menu=Integer.parseInt(menu_);
 		
 		return menu;
+	}
+
+	public void movePrevList() {	//2번(이전) 입력 시
+		if(page==1) {
+			System.out.println("=========================");
+			System.out.println("[ 이전 페이지가 없습니다 ]");
+			System.out.println("=========================");
+		}
+		page--;
+	}
+
+	public void moveNextList() throws ClassNotFoundException, SQLException {
+		List<Notice> list=service.getList(page);	//int값(page) 넣고 출력
+		int count=service.getCount();	//지역변수로 수정
+		int lastPage=count/10;			//마지막페이지
+		lastPage = count%10>0? lastPage+1:lastPage;	//3항연산자
+		
+		if(page==lastPage) {
+			System.out.println("=========================");
+			System.out.println("[ 다음 페이지가 없습니다 ]");
+			System.out.println("=========================");
+		}
+		page++;
+		
 	}
 
 }

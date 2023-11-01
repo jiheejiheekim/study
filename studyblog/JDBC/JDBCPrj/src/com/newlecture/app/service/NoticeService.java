@@ -19,14 +19,21 @@ public class NoticeService {
 	private String pwd = "newlec";
 	private String driver="oracle.jdbc.driver.OracleDriver";
 	
-	public List<Notice> getList() throws SQLException, ClassNotFoundException{
+	public List<Notice> getList(int page) throws SQLException, ClassNotFoundException{
 		
-		String sql = "SELECT * FROM NOTICE";
+		int start = 1 + (page-1)*10;	//1,11,21,31...
+		int end = 10*page;				//10,20,30,40..
+		
+		String sql = "select * from notice_view where num between ? and ?";
 
 		Class.forName(driver);
 		Connection con = DriverManager.getConnection(url, uid, pwd);
-		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery(sql);
+		PreparedStatement st = con.prepareStatement(sql);
+		
+		st.setInt(1, start);
+		st.setInt(2, end);
+		
+		ResultSet rs = st.executeQuery();
 		
 		List<Notice> list=new ArrayList<Notice>();
 		
@@ -139,5 +146,30 @@ public class NoticeService {
 		con.close();
 		
 		return result;
+	}
+
+	//단일값을 얻어옴 (Scalar)
+	public int getCount() throws ClassNotFoundException, SQLException {
+		int count=0;	//기본값을 0으로 둠
+		
+		String sql = "select count(id) count from notice";
+
+		Class.forName(driver);
+		Connection con = DriverManager.getConnection(url, uid, pwd);
+		Statement st = con.createStatement();
+				
+		ResultSet rs = st.executeQuery(sql);
+		
+		List<Notice> list=new ArrayList<Notice>();
+		
+		if(rs.next()) {
+			count = rs.getInt("count");
+		}
+
+		rs.close();
+		st.close();
+		con.close();
+		
+		return count;
 	}
 }
