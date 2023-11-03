@@ -19,5 +19,14 @@
   	<url-pattern>/hello</url-pattern>
   </servlet-mapping> -->
   
+<!--   <filter>
+  	<filter-name>characterEncodingFilter</filter-name>
+  	<filter-class>com.newlecture.web.filter.CharacterEncodingFilter</filter-class>
+  </filter>				패키지명.클래스명
+  <filter-mapping>
+  	<filter-name>characterEncodingFilter</filter-name>
+  	<url-pattern>/*</url-pattern>	/* : 모든 url에 적용
+  </filter-mapping> -->
+  
   
 </web-app>
