@@ -13,10 +13,24 @@ import javax.servlet.http.HttpServletResponse;
 public class Nana extends HttpServlet {
 	
 	@Override
-	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		PrintWriter out=resp.getWriter();
-		out.println("Hello ~~~ ");
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+		
+		PrintWriter out=response.getWriter();
+		
+		String cnt_=request.getParameter("cnt");
+
+		int cnt=100;	//일단 기본값을 가짐
+		
+		if(cnt_ != null && !cnt_.equals("")) {
+			cnt=Integer.parseInt(cnt_);
+		}//cnt_의 값이 null이 아니고 빈문자열이 아니라면 cnt에 cnt_ 값을 대입
+		
+		for(int i=0; i<cnt; i++) {
+			out.println((i+1)+":안녕 Servlet!!<br>");
+		}
 	}
 
 }
