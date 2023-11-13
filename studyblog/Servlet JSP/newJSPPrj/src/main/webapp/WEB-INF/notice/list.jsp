@@ -185,7 +185,7 @@
 						pageContext.setAttribute("n", n);
 					
 					%> --%>
-					<c:forEach items="${list}">
+					<c:forEach var="n" items="${list}">
 						<tr>
 							<td>${n.id}</td>
 							<td class="title indent text-align-left">
@@ -215,9 +215,13 @@
 		<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
 		
 	</div>
+	
+	<c:set var="startNum" value="" />
+	
 	<ul class="-list- center">
-		<li><a class="-text- orange bold" href="?p=1&t=&q=" >1</a></li>
-				
+		<c:forEach var="i" begin="0" end="4">
+		<li><a class="-text- orange bold" href="?p=${1+i}&t=&q=" >${1+i}</a></li>
+		</c:forEach>
 	</ul>
 	<div>
 		
