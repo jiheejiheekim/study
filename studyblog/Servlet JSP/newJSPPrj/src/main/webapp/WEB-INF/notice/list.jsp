@@ -210,24 +210,31 @@
 			<div class="margin-top align-center pager">	
 		
 	<div>
+	<c:set var="page" value="${(param.p == null)? 1:param.p}" />
+	<c:set var="startNum" value="${page-(page-1)%5}" />
+	<c:set var="lastNum" value="23" />	<!-- 진행 위해 인위적으로 넣음 -->
 		
-		
-		<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
-		
+		<c:if test="${startNum > 1}">
+			<a herf="?p=${startNum-1}&t=&q=" class="btn btn-prev" >이전</a>
+		</c:if>
+		<c:if test="${startNum <= 1}">
+			<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
+		</c:if>
 	</div>
 	
-	<c:set var="startNum" value="" />
 	
 	<ul class="-list- center">
 		<c:forEach var="i" begin="0" end="4">
-		<li><a class="-text- orange bold" href="?p=${1+i}&t=&q=" >${1+i}</a></li>
+		<li><a class="-text- orange bold" href="?p=${startNum+i}&t=&q=" >${startNum+i}</a></li>
 		</c:forEach>
 	</ul>
 	<div>
-		
-		
+		<c:if test="${startNum+5 < lastNum}">
+			<a href="?p=${startNum+5}&t=&q=" class="btn btn-next">다음</a>
+		</c:if>
+		<c:if test="${startNum+5 >= lastNum}">
 			<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
-		
+		</c:if>
 	</div>
 	
 			</div>
