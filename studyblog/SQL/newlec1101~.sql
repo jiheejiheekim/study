@@ -40,5 +40,6 @@ insert into notice values(19, 'ex', 'exercise', '저녁밥 먹기전에', sysdate, 0 ,'
 insert into notice values(20, '약국도 가야됨', 'medi', '귀찮다', sysdate, 0 ,'');
 insert into notice values(21, '수료 50% 남음', 'fighting', '하지만 다 해야돼', sysdate, 0 ,'');
 
-
+------------------------------------------------------------------------11/14
+select * from notice;
     
