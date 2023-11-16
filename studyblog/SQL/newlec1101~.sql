@@ -152,18 +152,20 @@ insert into notice values(notice_seq.nextval, '텀블러 사고싶다', '미미', 'ㅁ', s
 commit;
 
 -----댓글 기능
+create view notice_view
+as
 select  n.id, n.title, n.writer_id, n.regdate, n.hit, n.files, count(c.id) cmt_count
 from notice n left join "COMMENT" c
 on n.id=c.notice_id
-group by n.id, n.title, n.writer_id, n.regdate, n.hit, n.files 
-order by n.id desc;
+group by n.id, n.title, n.writer_id, n.regdate, n.hit, n.files;
+--order by n.id desc;
 
 
 SELECT * FROM (
 SELECT ROWNUM NUM, N.* 
-FROM (SELECT * FROM NOTICE WHERE "+field+" LIKE ? ORDER BY ID DESC) N
+FROM (SELECT * FROM NOTICE_VIEW WHERE TITLE LIKE '%%' ORDER BY ID DESC) N
 )
-WHERE NUM BETWEEN 1 AND 10
+WHERE NUM BETWEEN 1 AND 10;
 
 
 
