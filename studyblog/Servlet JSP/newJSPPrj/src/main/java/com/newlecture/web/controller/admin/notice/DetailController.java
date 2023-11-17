@@ -1,4 +1,4 @@
-package com.newlecture.web.controller.notice;
+package com.newlecture.web.controller.admin.notice;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.newlecture.web.entity.Notice;
 import com.newlecture.web.service.NoticeService;
 
-@WebServlet("/notice/detail")
+@WebServlet("/admin/board/notice/detail")
 public class DetailController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,7 +31,8 @@ public class DetailController extends HttpServlet {
 		//서블릿에서 서블릿으로 전이 - 2가지
 		//1. redirect : 다른페이지로 가는 것
 		//2. forward : 페이지를 이어 받는 것 - 채택
-		request.getRequestDispatcher("/WEB-INF/view/notice/detail.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/admin/board/notice/detail.jsp")
+			.forward(request, response);
 		/* "/" : home 디렉토리 - 여기서는 webapp를 의미 */
 		
 	}

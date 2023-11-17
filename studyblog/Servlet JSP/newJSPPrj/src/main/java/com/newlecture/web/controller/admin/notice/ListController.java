@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.newlecture.web.entity.NoticeView;
 import com.newlecture.web.service.NoticeService;
 
-@WebServlet("/admin/notice/list")
+@WebServlet("/admin/board/notice/list")
 public class ListController extends HttpServlet {
 	
 	@Override
@@ -20,12 +20,23 @@ public class ListController extends HttpServlet {
 			throws ServletException, IOException {
 		String[] openIds=request.getParameterValues("open-id");
 		String[] delIds=request.getParameterValues("del-id");
+		String cmd=request.getParameter("cmd");
 		
-		//서버쪽 콘솔에만 출력
-		for(String openId:openIds)
-			System.out.printf("openId id : %s\n", openId);
-		for(String delId:delIds)
-			System.out.printf("delId id : %s\n", delId);
+		switch(cmd) {
+		case "일괄공개":
+			for(String openId:openIds)
+				System.out.printf("openId id : %s\n", openId);
+			break;
+		case "일괄삭제":
+			NoticeService service=new NoticeService();
+			int[] ids=new int[delIds.length];
+			for(int i=0; i<delIds.length; i++) {
+				ids[i]=Integer.parseInt(delIds[i]);
+			}
+			int result=service.deleteNoticeAll(ids);
+			break;
+		}
+		response.sendRedirect("list");	//get요청
 	}
 	
 	
@@ -60,6 +71,6 @@ public class ListController extends HttpServlet {
 		request.setAttribute("count", count);
 		
 		//forward방식
-		request.getRequestDispatcher("/WEB-INF/admin/board/notice/list.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/admin/board/notice/list.jsp").forward(request, response);
 	}
 }
