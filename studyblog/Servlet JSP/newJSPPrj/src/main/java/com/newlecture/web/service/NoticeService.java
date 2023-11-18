@@ -28,7 +28,7 @@ public class NoticeService {
 	public int insertNotice(Notice notice){
 		int result=0;
 				
-		String sql= "INSERT INTO NOTICE (ID, TITLE ,CONTENT, WRITER_ID, PUB) VALUES (NOTICE_SEQ.NEXTVAL,?,?,?,?)";
+		String sql= "INSERT INTO NOTICE (TITLE, CONTENT, WRITER_ID, PUB) VALUES (?,?,?,?)";
 		
 		String url = "jdbc:oracle:thin:@localhost:1521/xe";
 		
@@ -111,7 +111,7 @@ public class NoticeService {
 				int id=rs.getInt("id");
 				String title=rs.getString("TITLE");
 				String writerId=rs.getString("WRITER_ID");
-				Date regdate=rs.getDate("REGDATE");
+				Date regdate=rs.getTimestamp("REGDATE");
 				String hit=rs.getString("HIT");
 				String files=rs.getString("FILES");
 				//String content=rs.getString("CONTENT");
@@ -206,7 +206,7 @@ public class NoticeService {
 				int nid=rs.getInt("id");
 				String title=rs.getString("TITLE");
 				String writerId=rs.getString("WRITER_ID");
-				Date regdate=rs.getDate("REGDATE");
+				Date regdate=rs.getTimestamp("REGDATE");
 				String hit=rs.getString("HIT");
 				String files=rs.getString("FILES");
 				String content=rs.getString("CONTENT");
@@ -260,7 +260,7 @@ public class NoticeService {
 				int nid=rs.getInt("id");
 				String title=rs.getString("TITLE");
 				String writerId=rs.getString("WRITER_ID");
-				Date regdate=rs.getDate("REGDATE");
+				Date regdate=rs.getTimestamp("REGDATE");
 				String hit=rs.getString("HIT");
 				String files=rs.getString("FILES");
 				String content=rs.getString("CONTENT");
@@ -313,7 +313,7 @@ public class NoticeService {
 				int nid=rs.getInt("id");
 				String title=rs.getString("TITLE");
 				String writerId=rs.getString("WRITER_ID");
-				Date regdate=rs.getDate("REGDATE");
+				Date regdate=rs.getTimestamp("REGDATE");
 				String hit=rs.getString("HIT");
 				String files=rs.getString("FILES");
 				String content=rs.getString("CONTENT");

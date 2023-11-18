@@ -16,7 +16,7 @@ public class IndexController extends HttpServlet {
 		
 		
 		
-		request.getRequestDispatcher("/WEB-INF/view/admin/index.jsp")
+		request.getRequestDispatcher("/WEB-INF/view/admin/board/notice/index.jsp")
 		.forward(request, response);
 		
 	}

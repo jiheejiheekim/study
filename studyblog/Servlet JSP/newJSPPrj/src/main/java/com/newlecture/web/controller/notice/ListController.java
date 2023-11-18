@@ -53,6 +53,6 @@ public class ListController extends HttpServlet {
 		request.setAttribute("count", count);
 		
 		//forward방식
-		request.getRequestDispatcher("/WEB-INF/notice/list.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/notice/list.jsp").forward(request, response);
 	}
 }
