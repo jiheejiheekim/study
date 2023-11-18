@@ -174,5 +174,3 @@ WHERE NUM BETWEEN 1 AND 10;
 
 
 
-
-
