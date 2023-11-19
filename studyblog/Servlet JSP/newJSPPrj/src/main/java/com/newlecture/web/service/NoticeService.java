@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -20,16 +21,67 @@ public class NoticeService {
 		return 0;
 	}
 	
-	public int pubNoticeAll(int[] ids){
+	public int pubNoticeAll(int[] oids, int[] cids){
+		//정수형배열 -> 컬렉션
+		List<String> oidsList=new ArrayList<>();
+		for(int i=0; i<oids.length; i++) {
+			oidsList.add(String.valueOf(oids[i]));
+		}
 		
-		return 0;
+		List<String> cidsList=new ArrayList<>();
+		for(int i=0; i<cids.length; i++) {
+			oidsList.add(String.valueOf(cids[i]));
+		}
+		
+		return pubNoticeAll(oidsList, cidsList);	//재호출
+	}
+	
+	public int pubNoticeAll(List<String> oids, List<String> cids){
+		
+		String oidsCSV = String.join(",", oids);	//쉼표로 구분
+		String cidsCSV = String.join(",", cids);
+		
+		return pubNoticeAll(oidsCSV,cidsCSV);
+	}
+	
+	// "20,30,43,56"
+	public int pubNoticeAll(String oidsCSV, String cidsCSV){
+		
+		int result=0;
+		
+		String sqlOpen=String.format("UPDATE NOTICE SET PUB=1 WHERE ID IN (%s)", oidsCSV);
+		String sqlClose=String.format("UPDATE NOTICE SET PUB=0 WHERE ID IN (%s)", cidsCSV);
+		
+		String url = "jdbc:oracle:thin:@localhost:1521/xe";
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection con = DriverManager.getConnection(url, "newlec", "newlec");
+			
+			Statement stOpen = con.createStatement(); //문장이 2개라서
+			result += stOpen.executeUpdate(sqlOpen);
+			
+			Statement stClose = con.createStatement(); //문장이 2개라서
+			result += stClose.executeUpdate(sqlClose);
+				
+			stOpen.close();
+			stClose.close();
+			con.close();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	public int insertNotice(Notice notice){
 		int result=0;
 				
-		String sql= "INSERT INTO NOTICE (TITLE, CONTENT, WRITER_ID, PUB) VALUES (?,?,?,?)";
-		
+		String sql= "INSERT INTO NOTICE (TITLE, CONTENT, WRITER_ID, PUB, FILES) VALUES (?,?,?,?,?)";
+	
 		String url = "jdbc:oracle:thin:@localhost:1521/xe";
 		
 		try {
@@ -41,6 +93,7 @@ public class NoticeService {
 			st.setString(2, notice.getContent());
 			st.setString(3, notice.getWriterId());
 			st.setBoolean(4, notice.getPub());
+			st.setString(5, notice.getFiles());
 			
 			result = st.executeUpdate();
 				
@@ -90,6 +143,69 @@ public class NoticeService {
 				+ "    FROM (SELECT * FROM NOTICE_VIEW WHERE "+field+" LIKE ? ORDER BY ID DESC) N"
 				+ " )"
 				+ " WHERE NUM BETWEEN ? AND ?";
+		
+		// 1, 11, 21, 31 -> start=1+(page-1)*10
+		// 10, 20, 30, 40 -> page*10
+		
+		String url = "jdbc:oracle:thin:@localhost:1521/xe";
+
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection con = DriverManager.getConnection(url, "newlec", "newlec");
+			PreparedStatement st = con.prepareStatement(sql);
+			
+			st.setString(1, "%"+query+"%");
+			st.setInt(2, 1+(page-1)*10);
+			st.setInt(3, page*10);
+			
+			ResultSet rs = st.executeQuery();
+
+			while(rs.next()) { 
+				int id=rs.getInt("id");
+				String title=rs.getString("TITLE");
+				String writerId=rs.getString("WRITER_ID");
+				Date regdate=rs.getTimestamp("REGDATE");
+				String hit=rs.getString("HIT");
+				String files=rs.getString("FILES");
+				//String content=rs.getString("CONTENT");
+				int cmtCount=rs.getInt("CMT_COUNT");
+				boolean pub=rs.getBoolean("PUB");
+				
+				NoticeView notice= new NoticeView(
+						id,
+						title,
+						writerId,
+						regdate,
+						hit,
+						files,
+						pub,
+						//content
+						cmtCount
+					);
+				list.add(notice);	//객체 생성 시 마다 목록 생성
+			 }
+			 
+			rs.close();
+			st.close();
+			con.close();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
+		return list;
+	}//--------------------------------
+	
+	public List<NoticeView> getNoticePubList(String field, String query, int page) {
+		List<NoticeView> list=new ArrayList<>();
+		
+		String sql="SELECT * FROM ("
+				+ "    SELECT ROWNUM NUM, N.* "
+				+ "    FROM (SELECT * FROM NOTICE_VIEW WHERE "+field+" LIKE ? ORDER BY ID DESC) N"
+				+ " )"
+				+ " WHERE PUB=1 AND NUM BETWEEN ? AND ?";
 		
 		// 1, 11, 21, 31 -> start=1+(page-1)*10
 		// 10, 20, 30, 40 -> page*10
@@ -378,5 +494,7 @@ public class NoticeService {
 		
 		return result;
 	}//--------------------------------
+
+	
 	
 }

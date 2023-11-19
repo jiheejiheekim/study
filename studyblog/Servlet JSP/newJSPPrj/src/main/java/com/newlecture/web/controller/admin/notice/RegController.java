@@ -49,6 +49,7 @@ public class RegController extends HttpServlet {
 		for(Part p:parts) {
 		
 			if(!p.getName().equals("file")) continue; //file이 아니라면 빠져나옴
+			if(p.getSize() == 0) continue; //파일이 비어있다면
 			
 			Part filePart=p;
 			String fileName=filePart.getSubmittedFileName(); //파일명 알아내기
@@ -58,9 +59,14 @@ public class RegController extends HttpServlet {
 			
 			InputStream fis=filePart.getInputStream();
 		
-			String realPath=request.getServletContext().getRealPath("/upload");
+			String realPath=request.getServletContext().getRealPath("/member/upload");
 			//물리경로를 알려줌
 			System.out.println(realPath);
+			
+			File path=new File(realPath);
+			if(!path.exists()) {	//만약 경로가 존재하지 않는다면
+				path.mkdir();		//디렉토리를 생성
+			}
 			
 			String filePath=realPath + File.separator + fileName;
 			//File.separator : 현재시스템이 가진 경로 구분방법을 문자로 제공해줌
