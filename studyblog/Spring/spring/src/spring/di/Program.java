@@ -1,13 +1,8 @@
 package spring.di;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import spring.di.entity.Exam;
-import spring.di.entity.NewlecExam;
 import spring.di.ui.ExamConsole;
 
 public class Program {
@@ -24,7 +19,8 @@ public class Program {
 		
 		//지시사항 알리기
 		ApplicationContext context=
-				new ClassPathXmlApplicationContext("spring/di/setting.xml");
+				new AnnotationConfigApplicationContext(NewlecDIConfig.class);
+				//new ClassPathXmlApplicationContext("spring/di/setting.xml");
 		
 		//Exam exam=context.getBean(Exam.class);
 		//System.out.println(exam.toString());
