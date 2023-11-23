@@ -26,8 +26,8 @@ public class Program {
 		ApplicationContext context=
 				new ClassPathXmlApplicationContext("spring/di/setting.xml");
 		
-		Exam exam=context.getBean(Exam.class);
-		System.out.println(exam.toString());
+		//Exam exam=context.getBean(Exam.class);
+		//System.out.println(exam.toString());
 		
 		//bean에 console이라는 이름의 지시서를 꺼내달라 
 		ExamConsole console=(ExamConsole)context.getBean("console");
@@ -36,13 +36,13 @@ public class Program {
 		
 		//Exam을 참조하기 위한 컬렉션 ArrayList
 		//List<Exam> exams=new ArrayList<>();
-		List<Exam> exams=(List<Exam>) context.getBean("exams");
-		exams.add(new NewlecExam(1,1,1,1));
+		//List<Exam> exams=(List<Exam>) context.getBean("exams");
+		//exams.add(new NewlecExam(1,1,1,1));
 		
 		
-		for(Exam e:exams) {
-			System.out.println(e);
-		}
+		//for(Exam e:exams) {
+			//System.out.println(e);
+		//}
 
 	}
 
