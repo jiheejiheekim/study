@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<dependencies>
-	
+
 		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-api -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
@@ -19,8 +19,9 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>6.1.0</version>
+			<version>5.2.9.RELEASE</version>
 		</dependency>
+
 
 
 	</dependencies>
