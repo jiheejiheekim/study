@@ -17,7 +17,7 @@ public class IndexController implements Controller {
         */
 		
 		// [방법2]
-        ModelAndView mv = new ModelAndView("index");
+        ModelAndView mv = new ModelAndView("root.index");
         mv.addObject("data", "Hello Spring MVC~");
         
         return mv;
