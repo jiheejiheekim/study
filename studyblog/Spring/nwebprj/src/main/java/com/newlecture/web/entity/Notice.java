@@ -3,6 +3,7 @@ package com.newlecture.web.entity;
 import java.util.Date;
 
 public class Notice {
+	
 	private int id;
 	private String title;
 	private String writerId;
@@ -11,11 +12,12 @@ public class Notice {
 	private int hit;
 	private String files;
 	
+	//초기화를 하며 값을 채우기 위해 기본 생성자
 	public Notice() {
 		
 	}
 	
-
+	//필드를 갖는 생성자
 	public Notice(int id, String title, String writerId, Date regDate, String content, int hit, String files) {
 		super();
 		this.id = id;
@@ -28,6 +30,7 @@ public class Notice {
 	}
 
 
+	//getter setter
 	public int getId() {
 		return id;
 	}
@@ -74,6 +77,5 @@ public class Notice {
 	}
 	
 	
-	
-	
+
 }
