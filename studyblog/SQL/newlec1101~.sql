@@ -168,9 +168,16 @@ FROM (SELECT * FROM NOTICE_VIEW WHERE TITLE LIKE '%%' ORDER BY ID DESC) N
 WHERE NUM BETWEEN 1 AND 10;
 
 
+select * from notice;
 
+SELECT * FROM NOTICE_VIEW WHERE ID BETWEEN 1 AND 15;
 
-
-
-
+------------------------------------------------------------------------12/05
+--view »ý¼º
+create view notice_view
+as
+select * from 
+    (select rownum num, n.* from
+        (select * from notice order by regdate desc) n
+    );
 
