@@ -1,7 +1,6 @@
 package com.newlecture.web.service.jdbc;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,9 +11,13 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.newlecture.web.entity.Notice;
 import com.newlecture.web.service.NoticeService;
 
+@Service	//@Controller, @Service, @Repository : 좀 더 의미론적
 public class JDBCNoticeService implements NoticeService {
 	
 	/*
@@ -24,12 +27,9 @@ public class JDBCNoticeService implements NoticeService {
 	private String driver = "oracle.jdbc.driver.OracleDriver";
 	*/
 	
+	@Autowired
 	private DataSource dataSource;
 	
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
-
 	public List<Notice> getList(int page, String field, String query) throws ClassNotFoundException, SQLException{
 		
 		int start = 1 + (page-1)*10;     // 1, 11, 21, 31, ..
